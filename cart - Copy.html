@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>  
+   
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONAZ COLLECTION</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  
+    <link rel="stylesheet" href="style.css">
+    
+
+
+</head>
+
+
+<body>
+
+    <section id="header">
+        <a href="#"><img src="c:\Users\User\OneDrive\Desktop\photos\Onaz logo.jpg" class="logo" alt=""></a>
+        <div> 
+            <ul id="navbar">
+                <li><a class="active" href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="cart.html"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>        
+        
+            </ul>
+        </div>
+
+
+
+    <div class="small-container  cart-page">
+
+        <table>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>subtotal</th>
+            
+        
+    </table>
+</div>
+    </div>
+    </section>
+    
+    <title>Order Form</title>
+
+    <h1>Order Form</h1>
+
+    <form action="process_order.php" method="post">
+        <!-- Product Selection -->
+        <label for="product">Select a Product:</label>
+        <select name="product" id="product">
+            <option value="product1">Product A - KSH700</option>
+            <option value="product2">Product B - KSH700</option>
+            <option value="product1">Product C - KSH850</option>
+            <option value="product2">Product D - $KSH1050</option>
+            <option value="product1">Product E - KSH200</option>
+            <option value="product2">Product F - KSH350</option>
+            <option value="product1">Product G - KSH500</option>
+            <option value="product2">Product H - KSH400</option>
+        </select>
+
+        <!-- Quantity Selection -->
+        <label for="quantity">Quantity:</label>
+        <input type="number" name="quantity" id="quantity" value="1" min="1" max="10">
+
+        <!-- Shipping Information -->
+        <h2>Shipping Information</h2>
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" required>
+
+        <label for="address">Address:</label>
+        <input type="text" name="address" id="address" required>
+
+        <label for="city">City:</label>
+        <input type="text" name="city" id="city" required>
+
+        <label for="zip">ZIP Code:</label>
+        <input type="text" name="zip" id="zip" required>
+
+        <!-- Payment Information (you can use a real payment gateway) -->
+        <h2>Payment Information</h2>
+        <label for="credit-card">Credit Card Number:</label>
+        <input type="text" name="credit-card" id="credit-card" required>
+
+        <label for="expiration">Expiration Date:</label>
+        <input type="text" name="expiration" id="expiration" required>
+
+        <!-- Submit Button -->
+        <input type="submit" value="Place Order">
+    </form>
+
+
+
+
+
+
+
+<style>
+
+.cart-page{
+    margin: 80px auto;
+}
+table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cart-info{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+th{
+    text-align: left;
+    padding: 5px;
+    color: #fff;
+    background: #ff523b;
+    font-weight: normal;
+}
+td{
+    padding: 10px 5px;
+
+}
+td input{
+    width: 40px;
+    height: 30px;
+    padding: 5px;
+}
+
+td a{
+    color: #ff523b;
+    font-size: 12px;
+
+}
+
+
+
+.total-price{
+    display: flex;
+    justify-content: flex-end;
+}
+.total-price table{
+    border-top: 3px solid #ff523b;
+    width: 100%;
+    max-width: 400px;
+}
+td:last-child{
+    text-align: right;
+}
+th:last-child{
+    text-align: right;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+#navbar{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    #navbar li{
+        list-style: none;
+        padding: 0 20px;
+    }
+    #navbar li a{
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 600;
+        color: black;
+        transition: 0.3s ease;
+    }
+    
+    #navbar li a:hover,
+    #navbar li a.active {
+        color: rgb(9, 233, 84);
+        
+    }
+    #navbar li a.active::after,
+    #navbar li a:hover::after{
+        content: "";
+        width: 30%;
+        height: 2px;
+        background: green;
+        position: absolute;
+        bottom: -4px;
+        left: 20px;
+    }
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    // Replace 'yourUserId' with the actual user ID of the logged-in user
+const userId = 'yourUserId';
+firebase
+// Reference the Firestore collection that contains the orders
+const ordersCollection = firebase.firestore().collection('orders');
+
+// Query orders for the specific user
+ordersCollection.where('userId', '==', userId).get()
+    .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            // For each order document, display the ordered items
+            const orderData = doc.data();
+            const orderedItems = orderData.items; // 'items' is an array of ordered items
+            
+            orderedItems.forEach((item) => {
+                // Render the ordered item on the cart page
+                const orderedItemDiv = document.createElement('div');
+                orderedItemDiv.textContent = `${item.productName} - Quantity: ${item.quantity} - Price: $${item.price}`;
+                // Append 'orderedItemDiv' to your cart page's display area
+            });
+        });
+    })
+    .catch((error) => {
+        console.error('Error retrieving orders:', error);
+    });
+
+let cart = [];
+let total = 0;
+
+function addToCart(productName, price) {
+    cart.push({ name: productName, price: price });
+    total += price;
+    updateCart();
+}
+
+function updateCart() {
+    const cartItems = document.getElementById('cart-items');
+    const cartTotal = document.getElementById('cart-total');
+    cartItems.innerHTML = '';
+    cart.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name} - $${item.price}`;
+        cartItems.appendChild(li);
+    });
+    cartTotal.textContent = total;
+}
+
+function checkout() {
+    // You can add code here to process the order, such as sending data to a server.
+    alert('Order placed! Total: $' + total);
+}
+
+// You can also implement functions to remove items from the cart and handle other cart-related actions.
+
+</script>
+</html>
